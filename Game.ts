@@ -1,5 +1,5 @@
-import Card from "@/models/Card";
 import shuffle from 'shuffle-array';
+import Card from "./Card";
 
 export default class Game {
     public cards: Card[] = [];
