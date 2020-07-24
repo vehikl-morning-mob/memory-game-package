@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "parcel index.html",
-    "publish": "npm run build && npm publish"
+    "publish": "parcel build index.ts && npm publish"
   },
   "keywords": [],
   "author": "",
