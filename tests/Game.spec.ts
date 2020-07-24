@@ -130,5 +130,22 @@ describe('Game', () => {
             expect(game.player1Score).toEqual(0);
             expect(game.player2Score).toEqual(1);
         });
-    })
-})
+
+        it('keeps track of whose turn it is', () => {
+            expect(game.currentPlayer).toEqual('1');
+            game.interactWithCard(0);
+
+            for (let i = 1; i < game.cards.length; i++) {
+                if (game.cards[i].content !== game.cards[0].content) {
+                    game.interactWithCard(i);
+                    break;
+                }
+            }
+
+            jest.advanceTimersByTime(1000);
+
+            expect(game.currentPlayer).toEqual('2');
+        });
+
+    });
+});

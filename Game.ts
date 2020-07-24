@@ -5,6 +5,7 @@ export default class Game {
     public cards: Card[] = [];
     public player1Score: number = 0;
     public player2Score: number = 0;
+    public currentPlayer: string = '1';
     private cardsInteractedWith: Card[] = [];
     private static readonly INTERACTION_STACK_SIZE = 2;
     private isAllowingUserInput: boolean = true;
@@ -12,7 +13,7 @@ export default class Game {
 
     constructor(numberOfPairs: number) {
         let wordsForCards: string[] = []
-        for (let i = 1; i <= numberOfPairs ; i++) {
+        for (let i = 1; i <= numberOfPairs; i++) {
             wordsForCards.push(i.toString());
         }
         const hasDuplicatedValues = () => new Set(wordsForCards).size !== wordsForCards.length;
@@ -48,6 +49,7 @@ export default class Game {
 
         if (this.isNumberOfFlippedCardsEven()) {
             this.turnNumber++;
+            this.currentPlayer = this.currentPlayer === '1' ? '2' : '1';
         }
 
         if (this.isNumberOfFlippedCardsEven() && this.areTwoLastCardsDifferent()) {
