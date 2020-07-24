@@ -1,14 +1,38 @@
 import Game from "../Game";
 import Card from "../Card";
+
 jest.useFakeTimers();
+
+enum FlipType {
+    correct,
+    incorrect
+}
 
 describe('Game', () => {
     let game: Game;
+
+    function makeFlip(previousCardInteracted: number, flipType: FlipType): Card {
+        const isValidSelection = (sourceContent, comparisonContent) =>
+            flipType === FlipType.correct
+                ? sourceContent === comparisonContent
+                : sourceContent !== comparisonContent;
+
+        const previousContent = game.cards[previousCardInteracted].content;
+
+        for (let i = 1; i < game.cards.length; i++) {
+            const newContent = game.cards[i].content;
+            if (isValidSelection(newContent, previousContent)) {
+                game.interactWithCard(i);
+                return game.cards[i];
+            }
+        }
+    }
+
     beforeEach(() => {
         game = new Game(3)
     })
 
-    it('generates pairs of cards for the provided amount of words',  () => {
+    it('generates pairs of cards for the provided amount of words', () => {
         const numberOfPairs = 3;
         const game = new Game(numberOfPairs);
 
@@ -24,12 +48,8 @@ describe('Game', () => {
         it('flips two cards with same content and they stay flipped', () => {
             game.interactWithCard(0);
             let cardsSelected = [game.cards[0]];
-            for (let i = 1; i < game.cards.length; i++) {
-                if (game.cards[i].content === game.cards[0].content) {
-                    game.interactWithCard(i);
-                    cardsSelected.push(game.cards[i]);
-                }
-            }
+            cardsSelected.push(makeFlip(0, FlipType.correct));
+
 
             jest.advanceTimersByTime(1000);
 
@@ -41,13 +61,8 @@ describe('Game', () => {
         it('flips two cards with different content and they are flipped back after a second', () => {
             game.interactWithCard(0);
             let cardsSelected = [game.cards[0]];
-            for (let i = 1; i < game.cards.length; i++) {
-                if (game.cards[i].content !== game.cards[0].content) {
-                    game.interactWithCard(i);
-                    cardsSelected.push(game.cards[i]);
-                    break;
-                }
-            }
+
+            cardsSelected.push(makeFlip(0, FlipType.incorrect));
 
             cardsSelected.forEach((card: Card, cardIndex: number) => {
                 expect(card.isFlipped).toBeTruthy();
@@ -71,8 +86,8 @@ describe('Game', () => {
             for (let i = 1; i < game.cards.length; i++) {
                 if (game.cards[i].content !== game.cards[0].content) {
                     game.interactWithCard(i);
-                    game.interactWithCard(i+1);
-                    expect(game.cards[i+1].isFlipped).toBeFalsy();
+                    game.interactWithCard(i + 1);
+                    expect(game.cards[i + 1].isFlipped).toBeFalsy();
                     break;
                 }
             }
@@ -98,11 +113,7 @@ describe('Game', () => {
     describe('multi-player', () => {
         it('counts the score of each player when player 1 scores', () => {
             game.interactWithCard(0);
-            for (let i = 1; i < game.cards.length; i++) {
-                if (game.cards[i].content === game.cards[0].content) {
-                    game.interactWithCard(i);
-                }
-            }
+            makeFlip(0, FlipType.correct);
 
             expect(game.player1Score).toEqual(1);
             expect(game.player2Score).toEqual(0);
@@ -110,42 +121,27 @@ describe('Game', () => {
 
         it('counts the score of each player when player 2 scores', () => {
             game.interactWithCard(0);
-
-            for (let i = 1; i < game.cards.length; i++) {
-                if (game.cards[i].content !== game.cards[0].content) {
-                    game.interactWithCard(i);
-                    break;
-                }
-            }
+            makeFlip(0, FlipType.incorrect);
 
             jest.advanceTimersByTime(1000);
 
             game.interactWithCard(0);
-            for (let i = 1; i < game.cards.length; i++) {
-                if (game.cards[i].content === game.cards[0].content) {
-                    game.interactWithCard(i);
-                }
-            }
+            makeFlip(0, FlipType.correct);
 
             expect(game.player1Score).toEqual(0);
             expect(game.player2Score).toEqual(1);
         });
 
+
         it('keeps track of whose turn it is', () => {
             expect(game.currentPlayer).toEqual('1');
             game.interactWithCard(0);
 
-            for (let i = 1; i < game.cards.length; i++) {
-                if (game.cards[i].content !== game.cards[0].content) {
-                    game.interactWithCard(i);
-                    break;
-                }
-            }
+            makeFlip(0, FlipType.correct);
 
             jest.advanceTimersByTime(1000);
 
             expect(game.currentPlayer).toEqual('2');
         });
-
     });
 });
