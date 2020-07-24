@@ -1,10 +1,10 @@
 {
   "name": "vehikl-memory-game-package",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "parcel build index.ts"
+    "build-and-publish": "parcel build index.ts && npm publish"
   },
   "keywords": [],
   "author": "",
