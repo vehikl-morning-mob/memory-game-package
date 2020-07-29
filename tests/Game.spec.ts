@@ -91,7 +91,6 @@ describe('Game', () => {
                     break;
                 }
             }
-
         });
 
         it('informs when the game is over', () => {
