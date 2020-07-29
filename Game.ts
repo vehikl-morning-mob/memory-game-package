@@ -1,17 +1,18 @@
 import shuffle from 'shuffle-array';
-import Card from "./Card";
+import Card from './Card';
+import Player from './Player';
 
 export default class Game {
     public cards: Card[] = [];
-    public player1Score: number = 0;
-    public player2Score: number = 0;
+    public player1: Player = new Player();
+    public player2: Player = new Player();
     private cardsInteractedWith: Card[] = [];
     private static readonly INTERACTION_STACK_SIZE = 2;
     private isAllowingUserInput: boolean = true;
     private turnNumber: number = 0;
 
     constructor(numberOfPairs: number) {
-        let wordsForCards: string[] = []
+        let wordsForCards: string[] = [];
         for (let i = 1; i <= numberOfPairs; i++) {
             wordsForCards.push(i.toString());
         }
@@ -30,8 +31,8 @@ export default class Game {
     }
 
     private increaseScoreOfCurrentPlayer() {
-        this.player1Score += (this.turnNumber + 1) % 2;
-        this.player2Score += this.turnNumber % 2;
+        this.player1.score += (this.turnNumber + 1) % 2;
+        this.player2.score += this.turnNumber % 2;
     }
 
     public interactWithCard(index: number) {

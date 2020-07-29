@@ -1,5 +1,5 @@
-import Game from "../Game";
-import Card from "../Card";
+import Game from '../Game';
+import Card from '../Card';
 
 jest.useFakeTimers();
 
@@ -111,12 +111,17 @@ describe('Game', () => {
     });
 
     describe('multi-player', () => {
+        it('starts with 2 players', () => {
+           expect(game.player1).toBeTruthy();
+           expect(game.player2).toBeTruthy();
+        });
+
         it('counts the score of each player when player 1 scores', () => {
             game.interactWithCard(0);
             makeFlip(0, FlipType.correct);
 
-            expect(game.player1Score).toEqual(1);
-            expect(game.player2Score).toEqual(0);
+            expect(game.player1.score).toEqual(1);
+            expect(game.player2.score).toEqual(0);
         });
 
         it('counts the score of each player when player 2 scores', () => {
@@ -128,8 +133,8 @@ describe('Game', () => {
             game.interactWithCard(0);
             makeFlip(0, FlipType.correct);
 
-            expect(game.player1Score).toEqual(0);
-            expect(game.player2Score).toEqual(1);
+            expect(game.player1.score).toEqual(0);
+            expect(game.player2.score).toEqual(1);
         });
 
 
