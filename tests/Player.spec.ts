@@ -14,9 +14,9 @@ describe('Player', () => {
         expect(player.name).toEqual(playerName);
     });
 
-    it('picks a power ranger name if no name was provided', () => {
+    it('gives a name if no name was provided', () => {
         const player = new Player();
 
-        expect(player.powerRangersNames).toContain(player.name);
+        expect(player.name).not.toBeFalsy();
     });
 });
