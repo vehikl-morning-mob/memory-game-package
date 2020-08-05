@@ -4,15 +4,18 @@ import Player from './Player';
 
 export default class Game {
     public cards: Card[] = [];
-    public player1: Player = new Player();
-    public player2: Player = new Player();
+    public player1: Player = new Player('1');
+    public player2: Player = new Player('2');
+    public currentPlayer: Player = new Player();
     private cardsInteractedWith: Card[] = [];
     private static readonly INTERACTION_STACK_SIZE = 2;
     private isAllowingUserInput: boolean = true;
-    private turnNumber: number = 0;
 
     constructor(numberOfPairs: number) {
         let wordsForCards: string[] = [];
+
+        this.currentPlayer = this.player1;
+
         for (let i = 1; i <= numberOfPairs; i++) {
             wordsForCards.push(i.toString());
         }
@@ -31,8 +34,7 @@ export default class Game {
     }
 
     private increaseScoreOfCurrentPlayer() {
-        this.player1.score += (this.turnNumber + 1) % 2;
-        this.player2.score += this.turnNumber % 2;
+        this.currentPlayer.score += 1;
     }
 
     public interactWithCard(index: number) {
@@ -48,8 +50,7 @@ export default class Game {
         }
 
         if (this.isNumberOfFlippedCardsEven()) {
-            this.turnNumber++;
-            // this.currentPlayer = this.currentPlayer === '1' ? '2' : '1';
+            this.currentPlayer = this.currentPlayer.name === '1' ? this.player2 : this.player1;
         }
 
         if (this.isNumberOfFlippedCardsEven() && this.areTwoLastCardsDifferent()) {
@@ -75,10 +76,6 @@ export default class Game {
 
     get isOver() {
         return this.cards.every(card => card.isFlipped);
-    }
-
-    get currentPlayer() {
-        return this.turnNumber % 2 == 0 ? '1' : '2';
     }
 
     public restart() {

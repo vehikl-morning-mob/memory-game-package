@@ -138,14 +138,16 @@ describe('Game', () => {
 
 
         it('keeps track of whose turn it is', () => {
-            expect(game.currentPlayer).toEqual('1');
+            expect(game.currentPlayer.name).toEqual('1');
             game.interactWithCard(0);
+
+            // Cause the turn to pass
 
             makeFlip(0, FlipType.correct);
 
             jest.advanceTimersByTime(1000);
 
-            expect(game.currentPlayer).toEqual('2');
+            expect(game.currentPlayer.name).toEqual('2');
         });
     });
 });
