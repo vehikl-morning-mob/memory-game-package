@@ -6,7 +6,7 @@ export default class Game {
     public cards: Card[] = [];
     public player1: Player = new Player('1');
     public player2: Player = new Player('2');
-    public currentPlayer: Player = new Player();
+    public currentPlayer: Player;
     private cardsInteractedWith: Card[] = [];
     private static readonly INTERACTION_STACK_SIZE = 2;
     private isAllowingUserInput: boolean = true;
@@ -50,7 +50,7 @@ export default class Game {
         }
 
         if (this.isNumberOfFlippedCardsEven()) {
-            this.currentPlayer = this.currentPlayer.name === '1' ? this.player2 : this.player1;
+            this.currentPlayer = this.currentPlayer === this.player1 ? this.player2 : this.player1;
         }
 
         if (this.isNumberOfFlippedCardsEven() && this.areTwoLastCardsDifferent()) {
