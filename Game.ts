@@ -42,18 +42,18 @@ export default class Game {
         this.cardsInteractedWith.unshift(currentCard);
         this.cardsInteractedWith.length = Game.INTERACTION_STACK_SIZE;
 
-        if (this.isNumberOfFlippedCardsEven() && !this.areTwoLastCardsDifferent()) {
+        if (!this.isNumberOfFlippedCardsEven()) {
+            return;
+        }
+
+        if (this.areTwoLastCardsDifferent()) {
+            this.isAllowingUserInput = false;
+            setTimeout(this.flipLastTwoCards.bind(this), 1000);
+        } else {
             this.currentPlayer.ownPair(this.cardsInteractedWith[0], this.cardsInteractedWith[1]);
         }
 
-        if (this.isNumberOfFlippedCardsEven()) {
-            this.currentPlayer = this.currentPlayer === this.player1 ? this.player2 : this.player1;
-        }
-
-        if (this.isNumberOfFlippedCardsEven() && this.areTwoLastCardsDifferent()) {
-            this.isAllowingUserInput = false;
-            setTimeout(this.flipLastTwoCards.bind(this), 1000);
-        }
+        this.currentPlayer = this.currentPlayer === this.player1 ? this.player2 : this.player1;
     }
 
     public getOwnerOfCard(cardIndex: number): Player | null {
