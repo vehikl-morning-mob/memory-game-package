@@ -11,6 +11,10 @@ export default class Game {
     private static readonly INTERACTION_STACK_SIZE = 2;
     private isAllowingUserInput: boolean = true;
 
+    get isOver() {
+        return this.cards.every(card => card.isFlipped);
+    }
+
     constructor(numberOfPairs: number) {
         let wordsForCards: string[] = [];
 
@@ -33,6 +37,13 @@ export default class Game {
         shuffle(this.cards);
     }
 
+    public restart() {
+        shuffle(this.cards);
+        for (const card of this.cards) {
+            card.flip();
+        }
+    }
+
     public interactWithCard(index: number) {
         let currentCard = this.cards[index];
         if (currentCard.isFlipped || !this.isAllowingUserInput) {
@@ -47,17 +58,6 @@ export default class Game {
         }
 
         this.finishTurn();
-    }
-
-    private finishTurn() {
-        if (this.areTwoLastCardsDifferent()) {
-            this.isAllowingUserInput = false;
-            setTimeout(this.flipLastTwoCards.bind(this), 1000);
-        } else {
-            this.currentPlayer.ownPair(this.cardsInteractedWith[0], this.cardsInteractedWith[1]);
-        }
-
-        this.currentPlayer = this.currentPlayer === this.player1 ? this.player2 : this.player1;
     }
 
     public getOwnerOfCard(cardIndex: number): Player | null {
@@ -89,14 +89,14 @@ export default class Game {
         return numberOfFlippedCards % 2 === 0;
     }
 
-    get isOver() {
-        return this.cards.every(card => card.isFlipped);
-    }
-
-    public restart() {
-        shuffle(this.cards);
-        for (const card of this.cards) {
-            card.flip();
+    private finishTurn() {
+        if (this.areTwoLastCardsDifferent()) {
+            this.isAllowingUserInput = false;
+            setTimeout(this.flipLastTwoCards.bind(this), 1000);
+        } else {
+            this.currentPlayer.ownPair(this.cardsInteractedWith[0], this.cardsInteractedWith[1]);
         }
+
+        this.currentPlayer = this.currentPlayer === this.player1 ? this.player2 : this.player1;
     }
 }

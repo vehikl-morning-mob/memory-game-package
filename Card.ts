@@ -1,6 +1,6 @@
 export default class Card {
-    private _isFlipped: boolean = false;
     public readonly content: string;
+    private _isFlipped: boolean = false;
 
     constructor(content: string) {
         this.content = content;
