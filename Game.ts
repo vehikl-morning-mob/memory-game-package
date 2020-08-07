@@ -33,10 +33,6 @@ export default class Game {
         shuffle(this.cards);
     }
 
-    private increaseScoreOfCurrentPlayer() {
-        this.currentPlayer.score += 1;
-    }
-
     public interactWithCard(index: number) {
         let currentCard = this.cards[index];
         if (currentCard.isFlipped || !this.isAllowingUserInput) {
@@ -47,7 +43,6 @@ export default class Game {
         this.cardsInteractedWith.length = Game.INTERACTION_STACK_SIZE;
 
         if (this.isNumberOfFlippedCardsEven() && !this.areTwoLastCardsDifferent()) {
-            this.increaseScoreOfCurrentPlayer();
             this.currentPlayer.ownPair(this.cardsInteractedWith[0], this.cardsInteractedWith[1]);
         }
 

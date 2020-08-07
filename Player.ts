@@ -1,7 +1,6 @@
 import Card from "./Card";
 
 export default class Player {
-    public score: number = 0;
     public name: string;
     public cardsOwned: Card[] = [];
 
@@ -26,5 +25,9 @@ export default class Player {
 
     public ownsCard(card: Card): boolean {
         return this.cardsOwned.includes(card);
+    }
+
+    public get score(): number {
+        return this.cardsOwned.length / 2;
     }
 }
