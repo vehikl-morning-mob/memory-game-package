@@ -46,6 +46,10 @@ export default class Game {
             return;
         }
 
+        this.finishTurn();
+    }
+
+    private finishTurn() {
         if (this.areTwoLastCardsDifferent()) {
             this.isAllowingUserInput = false;
             setTimeout(this.flipLastTwoCards.bind(this), 1000);
