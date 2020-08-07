@@ -1,4 +1,5 @@
 import Player from '../Player';
+import Card from '../Card';
 
 describe('Player', () => {
     it('starts with a score of 0', () => {
@@ -18,5 +19,29 @@ describe('Player', () => {
         const player = new Player();
 
         expect(player.name).not.toBeFalsy();
+    });
+
+    it('can own a pair of cards', () => {
+        const player = new Player();
+        const cardOne = new Card('1');
+        const cardTwo = new Card('1');
+
+        player.ownPair(cardOne, cardTwo);
+
+        expect(player.cardsOwned).toContain(cardOne);
+        expect(player.cardsOwned).toContain(cardTwo);
+    });
+
+    it('knows when they own a card', () => {
+        const player = new Player();
+        const cardOne = new Card('1');
+        const cardTwo = new Card('1');
+        const cardTheyDoNotOwn = new Card('2');
+
+        player.ownPair(cardOne, cardTwo);
+
+        expect(player.ownsCard(cardOne)).toBe(true);
+        expect(player.ownsCard(cardTwo)).toBe(true);
+        expect(player.ownsCard(cardTheyDoNotOwn)).toBe(false);
     });
 });

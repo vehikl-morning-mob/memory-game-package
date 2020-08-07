@@ -45,8 +45,10 @@ export default class Game {
         currentCard.flip();
         this.cardsInteractedWith.unshift(currentCard);
         this.cardsInteractedWith.length = Game.INTERACTION_STACK_SIZE;
+
         if (this.isNumberOfFlippedCardsEven() && !this.areTwoLastCardsDifferent()) {
             this.increaseScoreOfCurrentPlayer();
+            this.currentPlayer.ownPair(this.cardsInteractedWith[0], this.cardsInteractedWith[1]);
         }
 
         if (this.isNumberOfFlippedCardsEven()) {
@@ -57,6 +59,20 @@ export default class Game {
             this.isAllowingUserInput = false;
             setTimeout(this.flipLastTwoCards.bind(this), 1000);
         }
+    }
+
+    public getOwnerOfCard(cardIndex: number): Player | null {
+        const targetCard: Card = this.cards[cardIndex];
+
+        if (this.player1.ownsCard(targetCard)) {
+            return this.player1;
+        }
+
+        if (this.player2.ownsCard(targetCard)) {
+            return this.player2;
+        }
+
+        return null;
     }
 
     private areTwoLastCardsDifferent() {
