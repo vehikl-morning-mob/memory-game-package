@@ -27,4 +27,8 @@ describe('Card', () => {
 
         expect(card.visibleContent).toEqual(GIVEN_TEXT);
     });
+
+    it('lies', () => {
+        expect(true).toEqual(false);
+    });
 });

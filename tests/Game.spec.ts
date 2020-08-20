@@ -11,7 +11,6 @@ enum FlipType {
 describe('Game', () => {
     let game: Game;
 
-
     function makeFlip(previousCardInteracted: number, flipType: FlipType): Card {
         const isValidSelection = (sourceContent, comparisonContent) =>
             flipType === FlipType.correct
