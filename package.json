@@ -4,7 +4,8 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build-and-publish": "parcel build index.ts && npm publish"
+    "build-and-publish": "parcel build index.ts && npm publish",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
