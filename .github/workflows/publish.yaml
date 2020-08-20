@@ -14,11 +14,8 @@ jobs:
       - name: Install packages
         run: npm install
 
-      - name: Install parcel
-        run: npm install -g parcel-bundler
-
       - name: Build
-        run: parcel build index.ts
+        run: npx parcel build index.ts
 
       - name: NPM Publish
         uses: JS-DevTools/npm-publish@v1
