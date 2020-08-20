@@ -1,4 +1,4 @@
-name: CI
+name: ConfigCI
 
 on:
   pull_request:
